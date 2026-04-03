@@ -61,6 +61,10 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+# Tarot bot SQLite (локальная БД из SQLITE_PATH)
+tarot_bot/*.db
+tarot_bot.db
+
 # Flask stuff:
 instance/
 .webassets-cache
