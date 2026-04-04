@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Env / секреты
+.env
+.env.*
+!.env.example
+
+# Локальные БД и кэши
+*.db
+*.sqlite3
+.pytest_cache/
+.mypy_cache/
+
+# Тесты и dev — не нужны в образе
+tests/
+pytest.ini
+requirements-dev.txt
+
+# IDE
+.idea/
+.vscode/
+
+# Compose и метаданные не копируются в образ (COPY только app/ и run.py)
+docker-compose*.yml

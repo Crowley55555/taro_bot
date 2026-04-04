@@ -61,9 +61,10 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Tarot bot SQLite (локальная БД из SQLITE_PATH)
-tarot_bot/*.db
-tarot_bot.db
+# SQLite (путь задаётся SQLITE_PATH; локально часто ./tarot_bot.db или ./data/*.db)
+*.db
+data/*
+!data/.gitkeep
 
 # Flask stuff:
 instance/
