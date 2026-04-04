@@ -1,5 +1,7 @@
 # Деплой: скопируйте .env из .env.example, задайте TELEGRAM_BOT_TOKEN и ключи LLM.
 # Запуск: docker compose up -d --build
+#
+# entrypoint в образе выставляет владельца /data на appuser (10001), чтобы SQLite мог писать в том.
 
 services:
   tarot-bot:
@@ -9,14 +11,14 @@ services:
     image: tarot-bot:latest
     container_name: tarot-bot
     restart: unless-stopped
+    init: true
     env_file:
       - .env
     environment:
-      # Персистентная БД на томе (путь внутри контейнера)
       SQLITE_PATH: /data/tarot_bot.db
     volumes:
       - tarot_data:/data
-    # Polling к api.telegram.org — открытых портов не требуется.
+    stop_grace_period: 30s
 
 volumes:
   tarot_data:

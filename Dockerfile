@@ -10,8 +10,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=/app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates \
+    && apt-get install -y --no-install-recommends ca-certificates gosu \
     && rm -rf /var/lib/apt/lists/*
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
@@ -20,10 +23,11 @@ RUN pip install --no-cache-dir --upgrade pip \
 COPY app ./app
 COPY run.py .
 
-RUN useradd --create-home --uid 10001 appuser \
-    && chown -R appuser:appuser /app
+RUN useradd --create-home --uid 10001 --user-group appuser \
+    && chown -R appuser:appuser /app \
+    && mkdir -p /data \
+    && chown appuser:appuser /data
 
-USER appuser
-
-# SQLite: смонтируйте том на каталог с SQLITE_PATH (см. README и docker-compose.yml).
+# Запуск процесса бота — от appuser через entrypoint (после chown тома /data).
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["python", "run.py"]
